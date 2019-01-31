@@ -436,7 +436,8 @@ def recursively_save_dict_contents_to_group(h5file, path, dic):
         # other types cannot be saved and will result in an error
         elif item is None or key == 'dview':
             h5file[path + key] = 'NoneType'
-        elif key in ['dims','medw', 'sigma_smooth_snmf', 'dxy', 'max_shifts', 'strides', 'overlaps', 'gSig']:
+        elif key in ['dims','medw', 'sigma_smooth_snmf', 'dxy', 'max_shifts',
+                     'strides', 'overlaps', 'gSig', 'gSiz', 'gSig_filt']:
             logging.info(key + ' is a tuple ****')
             h5file[path + key] = np.array(item)
         elif type(item).__name__ in ['CNMFParams', 'Estimates']: # parameter object
@@ -464,7 +465,9 @@ def recursively_load_dict_contents_from_group( h5file, path):
                     ans[key] = None
                 else:
                     ans[key] = item.value
-            elif key in ['dims', 'medw', 'sigma_smooth_snmf', 'dxy', 'max_shifts', 'strides', 'overlaps']:
+            elif key in ['dims', 'medw', 'sigma_smooth_snmf', 'dxy',
+                         'max_shifts', 'strides', 'overlaps', 'gSig', 'gSiz',
+                         'gSig_filt']:
 
                 if type(item.value) == np.ndarray:
                     ans[key] = tuple(item.value)
