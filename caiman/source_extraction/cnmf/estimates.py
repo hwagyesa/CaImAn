@@ -407,7 +407,7 @@ class Estimates(object):
     def play_movie(self, imgs, q_max=99.75, q_min=2, gain_res=1,
                    magnification=1, include_bck=True,
                    frame_range=slice(None, None, None),
-                   bpx=0, thr=0.):
+                   bpx=0, thr=0., the_backend='opencv'):
         """Displays a movie with three panels (original data (left panel),
         reconstructed data (middle panel), residual (right panel))
 
@@ -438,6 +438,9 @@ class Estimates(object):
 
             thr: float (values in [0, 1[)
                 threshold value for contours, no contours if thr=0
+
+            the_backend: str (values in ['opencv', 'pylab', 'notebook'])
+                play movie with a specific backend
 
         Returns:
             self (to stop the movie press 'q')
@@ -512,7 +515,8 @@ class Estimates(object):
             cv2.destroyAllWindows()
 
         else:
-            mov.play(q_min=q_min, q_max=q_max, magnification=magnification)
+            mov.play(q_min=q_min, q_max=q_max, magnification=magnification,
+                     backend=the_backend)
 
         return self
 
