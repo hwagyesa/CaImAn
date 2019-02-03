@@ -1004,6 +1004,10 @@ class movie(ts.timeseries):
         else:
             minmov = np.nanmin(self)
 
+
+        if fr is None:
+            fr = self.fr
+
         if backend == 'pylab':
             pl.ion()
             fig = pl.figure(1)
@@ -1030,10 +1034,9 @@ class movie(ts.timeseries):
                                            frames=self.shape[0], interval=1, blit=True)
 
             # call our new function to display the animation
-            return visualization.display_animation(anim, fps=fr)
-
-        if fr is None:
-            fr = self.fr
+            vid_fn = '/media/out.mp4'
+            anim.save(vid_fn, fps=fr)
+            #return visualization.display_animation(anim, fps=fr)
 
         if backend == 'opencv_todisk':
             fourcc = cv2.VideoWriter_fourcc(*'MP4V')
