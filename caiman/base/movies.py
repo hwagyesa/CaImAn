@@ -1038,6 +1038,7 @@ class movie(ts.timeseries):
         looping = True
         terminated = False
 
+        print("Entering loop")
         while looping:
 
             for iddxx, frame in enumerate(self):
