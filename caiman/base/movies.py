@@ -1032,6 +1032,13 @@ class movie(ts.timeseries):
             # call our new function to display the animation
             return visualization.display_animation(anim, fps=fr)
 
+        if backend == 'opencv_todisk':
+            fourcc = cv2.VideoWriter_fourcc(*'MP4V')
+            vid_fn = '/media/out.mp4'
+            out = cv2.VideoWriter(vid_fn, fourcc, fr, (640, 480))
+            pass
+
+
         if fr is None:
             fr = self.fr
 
@@ -1043,6 +1050,26 @@ class movie(ts.timeseries):
             for iddxx, frame in enumerate(self):
                 if bord_px is not None and np.sum(bord_px) > 0:
                     frame = frame[bord_px:-bord_px, bord_px:-bord_px]
+
+                if backend == 'opencv_todisk':
+                    # Write a .mp4 file to a fixed disk path... then play it locally
+                    if magnification != 1:
+                        frame = cv2.resize(
+                            frame, None, fx=magnification, fy=magnification, interpolation=interpolation)
+                    frame = (offset + frame - minmov) * gain /(maxmov - minmov)
+
+                    if plot_text == True:
+                        text_width, text_height = cv2.getTextSize('Frame = ' + str(iddxx), fontFace=5, fontScale = 0.8, thickness=1)[0]
+                        cv2.putText(frame, 'Frame = ' + str(iddxx), ((frame.shape[1] - text_width) // 2,
+                                    frame.shape[0] - (text_height + 5)), fontFace=5, fontScale=0.8, color=(255, 255, 255), thickness=1)
+
+                    out.write(frame)
+                    #cv2.imshow('frame', frame)
+
+                    #if cv2.waitKey(int(1. / fr * 1000 * 1000)) & 0xFF == ord('q'):
+                        #looping = False
+                        #terminated = True
+                        #break
 
                 if backend == 'opencv':
                     if magnification != 1:
@@ -1090,6 +1117,13 @@ class movie(ts.timeseries):
                 looping = False
 
         if backend == 'opencv':
+            cv2.waitKey(100)
+            cv2.destroyAllWindows()
+            for i in range(10):
+                cv2.waitKey(100)
+
+        if backend == 'opencv_todisk':
+            out.release()
             cv2.waitKey(100)
             cv2.destroyAllWindows()
             for i in range(10):
