@@ -1032,15 +1032,14 @@ class movie(ts.timeseries):
             # call our new function to display the animation
             return visualization.display_animation(anim, fps=fr)
 
+        if fr is None:
+            fr = self.fr
+
         if backend == 'opencv_todisk':
             fourcc = cv2.VideoWriter_fourcc(*'MP4V')
             vid_fn = '/media/out.mp4'
             out = cv2.VideoWriter(vid_fn, fourcc, fr, (640, 480))
             pass
-
-
-        if fr is None:
-            fr = self.fr
 
         looping = True
         terminated = False
