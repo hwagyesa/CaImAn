@@ -1024,6 +1024,7 @@ class movie(ts.timeseries):
             fig = pl.figure()
             im = pl.imshow(self[0], interpolation='None', cmap=pl.cm.gray)
             pl.axis('off')
+            pl.tight_layout()
 
             def animate(i):
                 im.set_data(self[i])
