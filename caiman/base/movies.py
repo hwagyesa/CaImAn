@@ -1061,7 +1061,7 @@ class movie(ts.timeseries):
 
                     cv2.imshow('frame', frame)
 
-                    if cv2.waitKey(int(1. / fr * 1000 * 1000)) & 0xFF == ord('q'):
+                    if cv2.waitKey(int(1. / fr * 1000)) & 0xFF == ord('q'):
                         looping = False
                         terminated = True
                         break
