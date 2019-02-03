@@ -1022,12 +1022,15 @@ class movie(ts.timeseries):
         if backend == 'notebook':
             # First set up the figure, the axis, and the plot element we want to animate
             fig = pl.figure()
-            im = pl.imshow(self[0], interpolation='None', cmap=pl.cm.gray)
+            def frame_rescale(frame):
+                return (offset + frame - minmov) * gain /(maxmov - minmov)
+
+            im = pl.imshow(frame_rescale(self[0]), interpolation='None', cmap=pl.cm.gray)
             pl.axis('off')
             pl.tight_layout()
 
             def animate(i):
-                im.set_data(self[i])
+                im.set_data(frame_rescale(self[i]))
                 return im,
 
             # call the animator.  blit=True means only re-draw the parts that have changed.
